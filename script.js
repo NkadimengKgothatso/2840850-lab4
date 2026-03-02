@@ -6,9 +6,10 @@
 // const country = document.getElementById("country-input").value;
 async function searchCountry(countryName) {
     const container = document.getElementById("country-info");
+    const spinner = document.getElementById("loading-spinner");
     try {
         // Show loading spinner
-        const spinner = document.getElementById("loading-spinner");
+        
           spinner.classList.remove("hidden"); 
         // Fetch country data
         const response = await fetch(`https://restcountries.com/v3.1/name/${countryName}`);
