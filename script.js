@@ -8,13 +8,17 @@ async function searchCountry(countryName) {
     const container = document.getElementById("country-info");
     const spinner = document.getElementById("loading-spinner");
     const borderingSection = document.getElementById("bordering-countries");
-    const errorBox = document.getElementById("error");
+    const errorBox = document.getElementById("error-message");
+    
     try {
+
+        borderingSection.innerHTML="";
+        errorBox.textContent="";
         // Show loading spinner
         
           spinner.classList.remove("hidden"); 
         // Fetch country data
-        const response = await fetch(`https://restcountries.com/v3.1/name/${countryName}`);
+        const response = await fetch(`https://restcountries.com/v3.1/name/${countryName}?fullText=true`);
         const data = await response.json();
         const country = data[0]; 
          // Update DOM
@@ -27,30 +31,32 @@ async function searchCountry(countryName) {
         `;
             
         // Fetch bordering countries
-        if (country.borders && country.borders.length > 0) {
-      const Codes = country.borders.join(",");
-      const bordersResponse = await fetch(`https://restcountries.com/v3.1/alpha?codes=${Codes}`);
-      const bordersData = await bordersResponse.json();
-        // Update bordering countries section
-         bordersData.forEach(border => {
-        const card = document.createElement("div");
-        card.classList.add("country-card");
+            if (country.borders) {
+            const Codes = country.borders.join(",");
+            const bordersResponse = await fetch(`https://restcountries.com/v3.1/alpha?codes=${Codes}`);
+            const bordersData = await bordersResponse.json();
 
-        card.innerHTML = `
-          <img src="${border.flags.svg}" alt="${border.name.common} flag">
-          <div class="card-content">
-            <h3>${border.name.common}</h3>
-            <p><strong>Capital:</strong> ${border.capital?.[0] || "N/A"}</p>
-            <p><strong>Population:</strong> ${border.population.toLocaleString()}</p>
-            <p><strong>Region:</strong> ${border.region}</p>
-          </div>
-        `;
+            // Update bordering countries section using for loop
+            for (let i = 0; i < bordersData.length; i++) {
+                const border = bordersData[i];
+                const card = document.createElement("div");
+                card.classList.add("country-card");
 
-        borderingSection.appendChild(card);
-      });
-    } else {
-      borderingSection.innerHTML = "<p>No bordering countries</p>";
-    }
+                card.innerHTML = `
+                <img src="${border.flags.svg}" alt="${border.name.common} flag">
+                <div class="card-content">
+                    <h3>${border.name.common}</h3>
+                    <p><strong>Capital:</strong> ${border.capital?.[0] || "N/A"}</p>
+                    <p><strong>Population:</strong> ${border.population.toLocaleString()}</p>
+                    <p><strong>Region:</strong> ${border.region}</p>
+                </div>
+                `;
+
+                borderingSection.appendChild(card);
+            }
+        } else {
+            borderingSection.innerHTML = "<p>No bordering countries</p>";
+        }
     } catch (error) {
         // Show error message
         container.innerHTML = `<p">${error.message}</p>`;
