@@ -1,0 +1,45 @@
+
+
+
+
+
+// const country = document.getElementById("country-input").value;
+async function searchCountry(countryName) {
+    const container = document.getElementById("country-info");
+    try {
+        // Show loading spinner
+        const spinner = document.getElementById("loading-spinner");
+          spinner.classList.remove("hidden"); 
+        // Fetch country data
+        const response = await fetch(`https://restcountries.com/v3.1/name/${countryName}`);
+        const data = await response.json();
+        const country = data[0]; 
+         // Update DOM
+            document.getElementById('country-info').innerHTML = `
+            <h2>${country.name.common}</h2>
+            <p><strong>Capital:</strong> ${country.capital[0]}</p>
+            <p><strong>Population:</strong> ${country.population.toLocaleString()}</p>
+            <p><strong>Region:</strong> ${country.region}</p>
+            <img src="${country.flags.svg}" alt="${country.name.common} flag">
+        `;
+            
+        // Fetch bordering countries
+        
+        // Update bordering countries section
+    } catch (error) {
+        // Show error message
+        container.innerHTML = `<p style="color:red;">${error.message}</p>`;
+    } finally {
+        // Hide loading spinner
+         spinner.classList.add("hidden");
+    }
+}
+
+
+document.getElementById('search-btn').addEventListener('click', () => {
+    const country = document.getElementById('country-input').value;
+    searchCountry(country);
+});
+
+// console.log(  searchCountry("South Africa"))
+// Event listeners
