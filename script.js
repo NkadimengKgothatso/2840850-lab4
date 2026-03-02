@@ -7,6 +7,8 @@
 async function searchCountry(countryName) {
     const container = document.getElementById("country-info");
     const spinner = document.getElementById("loading-spinner");
+    const borderingSection = document.getElementById("bordering-countries");
+    const errorBox = document.getElementById("error");
     try {
         // Show loading spinner
         
@@ -25,11 +27,33 @@ async function searchCountry(countryName) {
         `;
             
         // Fetch bordering countries
-        
+        if (country.borders && country.borders.length > 0) {
+      const Codes = country.borders.join(",");
+      const bordersResponse = await fetch(`https://restcountries.com/v3.1/alpha?codes=${Codes}`);
+      const bordersData = await bordersResponse.json();
         // Update bordering countries section
+         bordersData.forEach(border => {
+        const card = document.createElement("div");
+        card.classList.add("country-card");
+
+        card.innerHTML = `
+          <img src="${border.flags.svg}" alt="${border.name.common} flag">
+          <div class="card-content">
+            <h3>${border.name.common}</h3>
+            <p><strong>Capital:</strong> ${border.capital?.[0] || "N/A"}</p>
+            <p><strong>Population:</strong> ${border.population.toLocaleString()}</p>
+            <p><strong>Region:</strong> ${border.region}</p>
+          </div>
+        `;
+
+        borderingSection.appendChild(card);
+      });
+    } else {
+      borderingSection.innerHTML = "<p>No bordering countries</p>";
+    }
     } catch (error) {
         // Show error message
-        container.innerHTML = `<p style="color:red;">${error.message}</p>`;
+        container.innerHTML = `<p">${error.message}</p>`;
     } finally {
         // Hide loading spinner
          spinner.classList.add("hidden");

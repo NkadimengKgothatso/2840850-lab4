@@ -18,7 +18,8 @@
 
 .country-card{
    width: 300px;
-  background: #ddaf6a;
+  background: #f5f4f3;
+  border-style: dotted;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 6px 25px rgba(231, 14, 14, 0.1);
@@ -62,7 +63,7 @@
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
     padding: 20px;
-    border-style: ridge;
+   
     }
 
 .error {
