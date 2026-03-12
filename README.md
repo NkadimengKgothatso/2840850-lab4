@@ -31,7 +31,7 @@ JavaScript (JS) – Interactivity and DOM manipulation
 
 
 -You can view the project directly in your browser here:
-👉 https://nkadimengkgothatso.github.io/2840850-lab4/
+👉 [https://nkadimengkgothatso.github.io/2840850-lab4/](https://nkadimengkgothatso.github.io/Country-Explorer-/)
 (No download required.)
 
 📂 Project Structure
